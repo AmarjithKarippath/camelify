@@ -6,10 +6,10 @@ Single-VPS production deployment using CloudPanel for nginx + SSL, and Docker Co
 
 ```
 Internet ─→ CloudPanel (nginx + Let's Encrypt, on host)
-              ├─ camelify.com      → 127.0.0.1:3000  (Next.js web)
+              ├─ camelify.com      → 127.0.0.1:3007  (Next.js web)
               ├─ www.camelify.com  → redirect to camelify.com
-              ├─ app.camelify.com  → 127.0.0.1:5173  (Vite dashboard)
-              └─ api.camelify.com  → 127.0.0.1:8000  (FastAPI)
+              ├─ app.camelify.com  → 127.0.0.1:3008  (Vite dashboard)
+              └─ api.camelify.com  → 127.0.0.1:8007  (FastAPI)
                                           │
                                           ▼
                                  Postgres 16 (docker-internal only)
@@ -128,10 +128,10 @@ Verify:
 ```bash
 docker compose ps        # all healthy?
 make prod-logs           # any errors?
-curl http://127.0.0.1:8000/healthz       # → {"status":"ok"}
-curl http://127.0.0.1:8000/readyz        # → {"status":"ready"} (DB check)
-curl http://127.0.0.1:3000/              # landing page HTML
-curl http://127.0.0.1:5173/              # dashboard HTML shell
+curl http://127.0.0.1:8007/healthz       # → {"status":"ok"}
+curl http://127.0.0.1:8007/readyz        # → {"status":"ready"} (DB check)
+curl http://127.0.0.1:3007/              # landing page HTML
+curl http://127.0.0.1:3008/              # dashboard HTML shell
 ```
 
 ---
@@ -149,9 +149,9 @@ For each domain below, in CloudPanel:
 
 | Site | Reverse-proxy target |
 |---|---|
-| `camelify.com` | `http://127.0.0.1:3000` |
-| `app.camelify.com` | `http://127.0.0.1:5173` |
-| `api.camelify.com` | `http://127.0.0.1:8000` |
+| `camelify.com` | `http://127.0.0.1:3007` |
+| `app.camelify.com` | `http://127.0.0.1:3008` |
+| `api.camelify.com` | `http://127.0.0.1:8007` |
 
 For `www.camelify.com`: create a separate site that redirects to `https://camelify.com` (CloudPanel has a built-in **Redirect** site type).
 

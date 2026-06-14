@@ -4,9 +4,9 @@
 # Each public service binds to 127.0.0.1 only; CloudPanel reverse-proxies
 # the public domains to these local ports.
 #
-#   camelify.com      → 127.0.0.1:3000  (web)
-#   app.camelify.com  → 127.0.0.1:5173  (dashboard)
-#   api.camelify.com  → 127.0.0.1:8000  (api)
+#   camelify.com      → 127.0.0.1:3007  (web)
+#   app.camelify.com  → 127.0.0.1:3008  (dashboard)
+#   api.camelify.com  → 127.0.0.1:8007  (api)
 #
 # Usage on the VPS:
 #   cp .env.prod.example .env
@@ -32,7 +32,7 @@ services:
     image: camelify/web:${IMAGE_TAG:-latest}
     restart: unless-stopped
     ports:
-      - "127.0.0.1:${WEB_PORT:-3000}:3000"
+      - "127.0.0.1:${WEB_PORT:-3007}:3000"
     environment:
       NODE_ENV: production
       NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL}
@@ -60,7 +60,7 @@ services:
     image: camelify/dashboard:${IMAGE_TAG:-latest}
     restart: unless-stopped
     ports:
-      - "127.0.0.1:${DASHBOARD_PORT:-5173}:80"
+      - "127.0.0.1:${DASHBOARD_PORT:-3008}:80"
     healthcheck:
       test: ["CMD", "wget", "-qO-", "http://127.0.0.1/"]
       interval: 30s
@@ -79,7 +79,7 @@ services:
     image: camelify/api:${IMAGE_TAG:-latest}
     restart: unless-stopped
     ports:
-      - "127.0.0.1:${API_PORT:-8000}:8000"
+      - "127.0.0.1:${API_PORT:-8007}:8000"
     environment:
       APP_ENV: production
       DATABASE_URL: postgresql+asyncpg://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}

@@ -1,14 +1,48 @@
+# Build artifacts
 node_modules
 .next
 out
+dist
+.turbo
+.vercel
+
+# Sibling projects (each has its own Dockerfile + build context)
+dashboard
+api
+scripts
+
+# Persistent data dirs (host bind mounts in prod)
+_data
+data
+media
+postgres-data
+
+# VCS
 .git
 .gitignore
-.env*.local
+.gitattributes
+
+# Env (build args inject what's needed; never copy local .env into image)
+.env
+.env.*
+!.env.example
+!.env.prod.example
+
+# Editor / OS
 .DS_Store
-*.log
-.vercel
+.vscode
+.idea
+
+# Docs / dev-only
 README.md
-Dockerfile
-docker-compose*.yml
+DEPLOY.md
 Makefile
+docker-compose*.yml
+
+# Misc
+*.log
 assets
+backups
+*.sql
+*.sql.gz
+*.tar.gz

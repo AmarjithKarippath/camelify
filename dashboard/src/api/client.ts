@@ -165,6 +165,25 @@ export async function createLink(payload: LinkCreate): Promise<Link> {
   return res.json();
 }
 
+// ----- Feedback -----
+
+export type FeedbackKind = "bug" | "feature" | "other";
+export type FeedbackStatus = "new" | "in_review" | "closed";
+
+export async function submitFeedback(payload: {
+  kind: FeedbackKind;
+  message: string;
+}): Promise<void> {
+  const res = await request("/v1/feedback", {
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
+  if (!res.ok) {
+    const data = await res.json().catch(() => ({}));
+    throw new Error(extractError(data) ?? "Could not send feedback.");
+  }
+}
+
 // ----- Admin -----
 
 export type UsersStats = {
@@ -192,6 +211,47 @@ export type RecentUser = {
 export async function getRecentUsers(limit = 10): Promise<RecentUser[]> {
   const res = await request(`/v1/admin/users/recent?limit=${limit}`);
   if (!res.ok) throw new Error(`Failed to load recent users (${res.status})`);
+  return res.json();
+}
+
+export type AdminFeedbackItem = {
+  id: string;
+  kind: FeedbackKind;
+  message: string;
+  status: FeedbackStatus;
+  created_at: string;
+  updated_at: string;
+  user_id: string;
+  user_email: string;
+  user_name: string | null;
+};
+
+export type AdminFeedbackResponse = {
+  counts: { new: number; in_review: number; closed: number; total: number };
+  items: AdminFeedbackItem[];
+};
+
+export async function getAdminFeedback(
+  statusFilter?: FeedbackStatus,
+): Promise<AdminFeedbackResponse> {
+  const q = statusFilter ? `?status=${statusFilter}` : "";
+  const res = await request(`/v1/admin/feedback${q}`);
+  if (!res.ok) throw new Error(`Failed to load feedback (${res.status})`);
+  return res.json();
+}
+
+export async function updateFeedbackStatus(
+  id: string,
+  status: FeedbackStatus,
+): Promise<AdminFeedbackItem> {
+  const res = await request(`/v1/admin/feedback/${encodeURIComponent(id)}`, {
+    method: "PATCH",
+    body: JSON.stringify({ status }),
+  });
+  if (!res.ok) {
+    const data = await res.json().catch(() => ({}));
+    throw new Error(extractError(data) ?? "Could not update.");
+  }
   return res.json();
 }
 

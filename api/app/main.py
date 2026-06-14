@@ -9,7 +9,17 @@ from fastapi.staticfiles import StaticFiles
 from starlette.middleware.sessions import SessionMiddleware
 
 from app.config import get_settings
-from app.routers import admin, auth, health, links, profile, public, uploads, users
+from app.routers import (
+    admin,
+    auth,
+    feedback,
+    health,
+    links,
+    profile,
+    public,
+    uploads,
+    users,
+)
 
 settings = get_settings()
 
@@ -60,6 +70,7 @@ def create_app() -> FastAPI:
     app.include_router(profile.router, prefix=v1)
     app.include_router(links.router, prefix=v1)
     app.include_router(uploads.router, prefix=v1)
+    app.include_router(feedback.router, prefix=v1)
     app.include_router(admin.router, prefix=v1)
     app.include_router(public.router, prefix=v1)
 

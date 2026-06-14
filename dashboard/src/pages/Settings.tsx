@@ -1,5 +1,12 @@
 import { useState } from "react";
-import { LogOut, Loader2, ExternalLink } from "lucide-react";
+import { Link as RouterLink } from "react-router-dom";
+import {
+  ExternalLink,
+  Loader2,
+  LogOut,
+  MessageSquare,
+  ChevronRight,
+} from "lucide-react";
 import { logout, LANDING_URL, type Me } from "@/api/client";
 import { Avatar } from "@/components/Avatar";
 import { useProfileContext } from "@/contexts/ProfileContext";
@@ -70,6 +77,31 @@ export function Settings({ user }: { user: Me }) {
             DOB: {profile.dob} <span className="ml-1">(never shown publicly)</span>
           </p>
         )}
+      </section>
+
+      {/* Help & feedback */}
+      <section>
+        <RouterLink
+          to="/feedback"
+          className="flex min-h-[64px] items-center gap-3 rounded-card bg-surface p-4 ring-1 ring-black/5 hover:ring-primary-soft active:scale-[0.99]"
+        >
+          <span
+            aria-hidden="true"
+            className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-primary-soft text-primary"
+          >
+            <MessageSquare className="h-5 w-5" />
+          </span>
+          <span className="min-w-0 flex-1">
+            <span className="block text-sm font-bold text-ink-heading">Send feedback</span>
+            <span className="block text-xs text-ink-muted">
+              Report a bug, request a feature, or just say hi.
+            </span>
+          </span>
+          <ChevronRight
+            className="h-5 w-5 shrink-0 text-ink-muted"
+            aria-hidden="true"
+          />
+        </RouterLink>
       </section>
 
       {/* Coming soon */}

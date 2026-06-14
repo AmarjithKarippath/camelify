@@ -10,6 +10,7 @@ import { Profile } from "@/pages/Profile";
 import { Links } from "@/pages/Links";
 import { Onboarding } from "@/pages/Onboarding";
 import { Admin } from "@/pages/Admin";
+import { Feedback } from "@/pages/Feedback";
 
 function Loading() {
   return (
@@ -34,6 +35,7 @@ export default function App() {
           <Route path="links" element={<Links />} />
           <Route path="profile" element={<Profile />} />
           <Route path="settings" element={<Settings user={user} />} />
+          <Route path="feedback" element={<Feedback />} />
           {user.is_admin && <Route path="admin" element={<Admin />} />}
           <Route path="*" element={<Navigate to="/" replace />} />
         </Route>

@@ -5,6 +5,7 @@ import {
   User,
   Settings,
   ShieldCheck,
+  MessageSquare,
   type LucideIcon,
 } from "lucide-react";
 import { Logo } from "./Logo";
@@ -15,6 +16,7 @@ const baseItems: Item[] = [
   { to: "/", label: "Home", icon: Home, end: true },
   { to: "/links", label: "Links", icon: Link2 },
   { to: "/profile", label: "Profile", icon: User },
+  { to: "/feedback", label: "Feedback", icon: MessageSquare },
   { to: "/settings", label: "Settings", icon: Settings },
 ];
 

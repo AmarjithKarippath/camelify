@@ -1,0 +1,132 @@
+# Camelify — production Docker Compose
+#
+# Designed to run on a VPS with CloudPanel managing nginx + Let's Encrypt.
+# Each public service binds to 127.0.0.1 only; CloudPanel reverse-proxies
+# the public domains to these local ports.
+#
+#   camelify.com      → 127.0.0.1:3000  (web)
+#   app.camelify.com  → 127.0.0.1:5173  (dashboard)
+#   api.camelify.com  → 127.0.0.1:8000  (api)
+#
+# Usage on the VPS:
+#   cp .env.prod.example .env
+#   # edit .env with real secrets
+#   docker compose up -d --build
+#
+#   docker compose logs -f
+#   docker compose ps
+#   docker compose restart api
+#   docker compose down
+
+services:
+  web:
+    container_name: camelify-web
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: runner
+      args:
+        NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL}
+        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL}
+        NEXT_PUBLIC_DASHBOARD_URL: ${NEXT_PUBLIC_DASHBOARD_URL}
+    image: camelify/web:${IMAGE_TAG:-latest}
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:${WEB_PORT:-3000}:3000"
+    environment:
+      NODE_ENV: production
+      NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL}
+      NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL}
+      NEXT_PUBLIC_DASHBOARD_URL: ${NEXT_PUBLIC_DASHBOARD_URL}
+      NEXT_INTERNAL_API_URL: http://api:8000
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:3000/"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+    networks:
+      - camelify
+
+  dashboard:
+    container_name: camelify-dashboard
+    build:
+      context: ./dashboard
+      dockerfile: Dockerfile
+      target: runner
+      args:
+        VITE_API_URL: ${VITE_API_URL}
+        VITE_LANDING_URL: ${VITE_LANDING_URL}
+    image: camelify/dashboard:${IMAGE_TAG:-latest}
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:${DASHBOARD_PORT:-5173}:80"
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1/"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    networks:
+      - camelify
+
+  api:
+    container_name: camelify-api
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+      target: runner
+    image: camelify/api:${IMAGE_TAG:-latest}
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:${API_PORT:-8000}:8000"
+    environment:
+      APP_ENV: production
+      DATABASE_URL: postgresql+asyncpg://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
+      SECRET_KEY: ${SECRET_KEY}
+      CORS_ORIGINS: ${CORS_ORIGINS}
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
+      GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
+      GOOGLE_REDIRECT_URI: ${GOOGLE_REDIRECT_URI}
+      FRONTEND_URL: ${FRONTEND_URL}
+      DASHBOARD_URL: ${DASHBOARD_URL}
+      MEDIA_ROOT: /app/media
+      MEDIA_PUBLIC_URL: ${MEDIA_PUBLIC_URL}
+      ADMIN_EMAILS: ${ADMIN_EMAILS}
+      SESSION_COOKIE_SECURE: "true"
+    volumes:
+      - ${MEDIA_HOST_PATH:-./_data/media}:/app/media
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://127.0.0.1:8000/healthz"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 20s
+    networks:
+      - camelify
+
+  postgres:
+    container_name: camelify-postgres
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    volumes:
+      - ${POSTGRES_HOST_PATH:-./_data/postgres}:/var/lib/postgresql/data
+    # NOTE: no host port binding. Postgres is reachable only on the docker network.
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - camelify
+
+networks:
+  camelify:
+    driver: bridge

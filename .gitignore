@@ -1,0 +1,110 @@
+# ----- OS -----
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# ----- Editors / IDEs -----
+.vscode/
+!.vscode/extensions.json
+!.vscode/settings.example.json
+.idea/
+*.iml
+*.swp
+*.swo
+*~
+.project
+.classpath
+.settings/
+.history/
+
+# ----- Logs -----
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# ----- Env files (NEVER commit secrets) -----
+.env
+.env.local
+.env.*.local
+.env.development
+.env.production
+.env.test
+# Examples should be committed:
+!.env.example
+!.env.prod.example
+!.env.*.example
+
+# ----- Next.js / Node -----
+node_modules/
+.next/
+.turbo/
+out/
+build/
+dist/
+.vercel/
+.npm/
+.eslintcache
+next-env.d.ts
+*.tsbuildinfo
+
+# ----- Python -----
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg
+*.egg-info/
+.eggs/
+.Python
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.tox/
+.coverage
+.coverage.*
+htmlcov/
+coverage.xml
+.hypothesis/
+
+# ----- Python virtual envs -----
+.venv/
+venv/
+env/
+ENV/
+
+# ----- Persistent runtime data (host bind mounts) -----
+_data/
+data/
+uploads/
+media/
+postgres-data/
+
+# ----- Docker -----
+docker-compose.override.yml
+
+# ----- Backup output -----
+backups/
+*.sql
+*.sql.gz
+*.dump
+*.tar.gz
+# Keep the migration history committed:
+!api/alembic/versions/*.py
+
+# ----- Misc -----
+*.pid
+*.seed
+*.pid.lock
+.cache/
+tmp/
+.temp/
+*.local

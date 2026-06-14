@@ -1,0 +1,109 @@
+# Camelify — development Docker Compose
+#
+#   docker compose -f docker-compose.dev.yml up
+#
+# Brings up: web (Next.js :3000) + dashboard (Vite :5173) + api (FastAPI :8000) + postgres :5432
+
+services:
+  web:
+    container_name: camelify-web-dev
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: dev
+    image: camelify/web:dev
+    command: npm run dev
+    ports:
+      - "${WEB_PORT:-3000}:3000"
+    environment:
+      NODE_ENV: development
+      NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:-http://localhost:3000}
+      NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:8000}
+      NEXT_PUBLIC_DASHBOARD_URL: ${NEXT_PUBLIC_DASHBOARD_URL:-http://localhost:5173}
+      NEXT_INTERNAL_API_URL: http://api:8000
+      WATCHPACK_POLLING: "true"
+      CHOKIDAR_USEPOLLING: "true"
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - /app/.next
+    networks:
+      - camelify
+
+  dashboard:
+    container_name: camelify-dashboard-dev
+    build:
+      context: ./dashboard
+      dockerfile: Dockerfile
+      target: dev
+    image: camelify/dashboard:dev
+    command: npm run dev
+    ports:
+      - "${DASHBOARD_PORT:-5173}:5173"
+    environment:
+      VITE_API_URL: ${VITE_API_URL:-http://localhost:8000}
+      VITE_LANDING_URL: ${VITE_LANDING_URL:-http://localhost:3000}
+    volumes:
+      - ./dashboard:/app
+      - /app/node_modules
+    networks:
+      - camelify
+
+  api:
+    container_name: camelify-api-dev
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+      target: dev
+    image: camelify/api:dev
+    ports:
+      - "${API_PORT:-8000}:8000"
+    environment:
+      APP_ENV: development
+      DATABASE_URL: postgresql+asyncpg://camelify:camelify@postgres:5432/camelify
+      SECRET_KEY: dev-secret-change-me
+      CORS_ORIGINS: '["http://localhost:3000","http://localhost:5173"]'
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID:-}
+      GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET:-}
+      GOOGLE_REDIRECT_URI: ${GOOGLE_REDIRECT_URI:-http://localhost:8000/v1/auth/google/callback}
+      FRONTEND_URL: http://localhost:3000
+      DASHBOARD_URL: http://localhost:5173
+      MEDIA_ROOT: /app/media
+      MEDIA_PUBLIC_URL: http://localhost:8000/media
+      ADMIN_EMAILS: ${ADMIN_EMAILS:-["buildbeyondlimit1@gmail.com"]}
+      SESSION_COOKIE_SECURE: "false"
+    volumes:
+      - ./api:/app
+      - api_media_dev:/app/media
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - camelify
+
+  postgres:
+    container_name: camelify-postgres-dev
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: camelify
+      POSTGRES_PASSWORD: camelify
+      POSTGRES_DB: camelify
+    volumes:
+      - postgres_dev_data:/var/lib/postgresql/data
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U camelify"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - camelify
+
+volumes:
+  postgres_dev_data:
+  api_media_dev:
+
+networks:
+  camelify:
+    driver: bridge

@@ -1,0 +1,99 @@
+import type { Metadata, Viewport } from "next";
+import { Manrope } from "next/font/google";
+import "./globals.css";
+
+const manrope = Manrope({
+  subsets: ["latin"],
+  variable: "--font-manrope",
+  display: "swap",
+  weight: ["400", "500", "600", "700", "800"],
+});
+
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://camelify.com";
+
+export const metadata: Metadata = {
+  metadataBase: new URL(siteUrl),
+  title: {
+    default: "Camelify — The Creator-First Link-in-Bio",
+    template: "%s · Camelify",
+  },
+  description:
+    "Camelify is the link-in-bio that puts creators first. Custom domain on every plan, free analytics, no surprise suspensions, and fair pricing. Free to start.",
+  applicationName: "Camelify",
+  keywords: [
+    "link in bio",
+    "linktree alternative",
+    "bio link tool",
+    "creator tools",
+    "Instagram link in bio",
+    "YouTube link in bio",
+    "creator economy",
+    "custom domain bio link",
+    "Camelify",
+  ],
+  authors: [{ name: "Camelify" }],
+  creator: "Camelify",
+  publisher: "Camelify",
+  category: "technology",
+  alternates: { canonical: "/" },
+  openGraph: {
+    type: "website",
+    url: siteUrl,
+    siteName: "Camelify",
+    title: "Camelify — The Creator-First Link-in-Bio",
+    description:
+      "Custom domain on every plan. Free analytics. No surprise suspensions. The link-in-bio creators actually deserve.",
+    locale: "en_US",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Camelify — The Creator-First Link-in-Bio",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Camelify — The Creator-First Link-in-Bio",
+    description:
+      "Custom domain on every plan. Free analytics. No surprise suspensions. The link-in-bio creators actually deserve.",
+    images: ["/og-image.png"],
+    creator: "@camelify",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
+  },
+  icons: {
+    icon: "/favicon.ico",
+    apple: "/apple-touch-icon.png",
+  },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#3FBF6F",
+  width: "device-width",
+  initialScale: 1,
+};
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <html lang="en" className={manrope.variable}>
+      <body className="font-sans bg-page text-ink-body bg-watermark">
+        {children}
+      </body>
+    </html>
+  );
+}

@@ -1,0 +1,14 @@
+node_modules
+.next
+out
+.git
+.gitignore
+.env*.local
+.DS_Store
+*.log
+.vercel
+README.md
+Dockerfile
+docker-compose*.yml
+Makefile
+assets

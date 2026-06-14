@@ -1,0 +1,29 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  scroll-behavior: smooth;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  background-color: #F1F5EE;
+  color: #1F2A37;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Prevent iOS Safari from zooming on focus — needs >= 16px */
+input,
+select,
+textarea {
+  font-size: 16px;
+}
+
+/* Subtle banking iconography watermark - decorative only */
+.bg-watermark {
+  background-image: radial-gradient(circle at 15% 20%, rgba(63, 191, 111, 0.04) 0, transparent 40%),
+                    radial-gradient(circle at 85% 60%, rgba(27, 58, 91, 0.04) 0, transparent 40%),
+                    radial-gradient(circle at 50% 90%, rgba(63, 191, 111, 0.03) 0, transparent 40%);
+}

@@ -44,10 +44,12 @@ export function SocialBadge({
   platform,
   href,
   title,
+  delayMs = 0,
 }: {
   platform: string;
   href: string;
   title?: string;
+  delayMs?: number;
 }) {
   const style = STYLES[platform] ?? STYLES.custom;
   const Icon = style.icon;
@@ -57,7 +59,8 @@ export function SocialBadge({
       target="_blank"
       rel="noopener noreferrer"
       aria-label={title ?? platform}
-      className={`grid h-10 w-10 place-items-center rounded-full text-white shadow-sm transition active:scale-95 ${style.bg}`}
+      style={{ animationDelay: `${delayMs}ms` }}
+      className={`grid h-10 w-10 place-items-center rounded-full text-white shadow-sm transition-all duration-300 ease-out-expo active:scale-95 motion-safe:animate-storefront-scale-in motion-safe:hover:-translate-y-1 motion-safe:hover:scale-110 motion-safe:hover:shadow-lg ${style.bg}`}
     >
       <Icon className="h-4 w-4" aria-hidden="true" />
     </a>

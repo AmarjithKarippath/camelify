@@ -33,6 +33,38 @@ const config: Config = {
       maxWidth: {
         container: "1200px",
       },
+      transitionTimingFunction: {
+        "out-expo": "cubic-bezier(0.22, 1, 0.36, 1)",
+        "out-back": "cubic-bezier(0.34, 1.56, 0.64, 1)",
+      },
+      keyframes: {
+        "storefront-rise": {
+          "0%": { opacity: "0", transform: "translateY(28px) scale(0.97)" },
+          "100%": { opacity: "1", transform: "translateY(0) scale(1)" },
+        },
+        "storefront-fade-up": {
+          "0%": { opacity: "0", transform: "translateY(14px)" },
+          "100%": { opacity: "1", transform: "translateY(0)" },
+        },
+        "storefront-scale-in": {
+          "0%": { opacity: "0", transform: "scale(0.82)" },
+          "100%": { opacity: "1", transform: "scale(1)" },
+        },
+        "storefront-banner-drift": {
+          "0%, 100%": { transform: "scale(1)" },
+          "50%": { transform: "scale(1.06)" },
+        },
+      },
+      animation: {
+        "storefront-rise":
+          "storefront-rise 0.75s cubic-bezier(0.22, 1, 0.36, 1) both",
+        "storefront-fade-up":
+          "storefront-fade-up 0.6s cubic-bezier(0.22, 1, 0.36, 1) both",
+        "storefront-scale-in":
+          "storefront-scale-in 0.65s cubic-bezier(0.34, 1.56, 0.64, 1) both",
+        "storefront-banner-drift":
+          "storefront-banner-drift 18s ease-in-out infinite",
+      },
     },
   },
   plugins: [],

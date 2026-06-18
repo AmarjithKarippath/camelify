@@ -93,7 +93,7 @@ services:
       MEDIA_ROOT: /app/media
       MEDIA_PUBLIC_URL: ${MEDIA_PUBLIC_URL}
       ADMIN_EMAILS: ${ADMIN_EMAILS}
-      SESSION_COOKIE_SECURE: "true"
+      SESSION_COOKIE_SECURE: ${SESSION_COOKIE_SECURE:-true}
     volumes:
       - ${MEDIA_HOST_PATH:-./_data/media}:/app/media
     depends_on:

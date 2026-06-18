@@ -3,8 +3,12 @@
 from functools import lru_cache
 from typing import List
 
-from pydantic import Field
+import logging
+
+from pydantic import Field, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
+
+logger = logging.getLogger(__name__)
 
 
 class Settings(BaseSettings):
@@ -66,6 +70,18 @@ class Settings(BaseSettings):
     media_public_url: str = Field(default="http://localhost:8000/media")
     # Caps for the avatar upload endpoint.
     avatar_max_bytes: int = Field(default=5 * 1024 * 1024)  # 5 MB
+
+    @model_validator(mode="after")
+    def disable_secure_cookies_for_http_oauth(self) -> "Settings":
+        # OAuth state lives in the session cookie between /login and /callback.
+        # Secure cookies are ignored by browsers on http://, which breaks Google auth locally.
+        if self.session_cookie_secure and self.google_redirect_uri.startswith("http://"):
+            logger.warning(
+                "SESSION_COOKIE_SECURE is true but GOOGLE_REDIRECT_URI is http — "
+                "disabling secure session cookies for local OAuth."
+            )
+            self.session_cookie_secure = False
+        return self
 
 
 @lru_cache

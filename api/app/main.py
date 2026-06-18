@@ -40,21 +40,22 @@ def create_app() -> FastAPI:
         lifespan=lifespan,
     )
 
-    # Required by Authlib to persist the OAuth state cookie during /callback.
-    app.add_middleware(
-        SessionMiddleware,
-        secret_key=settings.secret_key,
-        same_site="lax",
-        https_only=settings.session_cookie_secure,
-        max_age=60 * 10,
-    )
-
     app.add_middleware(
         CORSMiddleware,
         allow_origins=settings.cors_origins,
         allow_credentials=True,
         allow_methods=["*"],
         allow_headers=["*"],
+    )
+
+    # Outermost middleware — must run first so Authlib can read/write the OAuth
+    # state cookie on /auth/google/login and /auth/google/callback.
+    app.add_middleware(
+        SessionMiddleware,
+        secret_key=settings.secret_key,
+        same_site="lax",
+        https_only=settings.session_cookie_secure,
+        max_age=60 * 10,
     )
 
     # Serve user-uploaded files at /media/*

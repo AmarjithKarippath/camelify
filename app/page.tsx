@@ -9,7 +9,7 @@ import { FAQ, faqStructuredData } from "@/components/FAQ";
 import { CTA } from "@/components/CTA";
 import { Footer } from "@/components/Footer";
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://camelify.com";
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.camelify.com";
 
 const organizationLd = {
   "@context": "https://schema.org",

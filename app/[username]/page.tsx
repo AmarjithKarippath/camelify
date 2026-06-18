@@ -6,7 +6,7 @@ import { StorefrontLinkRow } from "@/components/storefront/StorefrontLinkRow";
 
 type Props = { params: Promise<{ username: string }> };
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://camelify.com";
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.camelify.com";
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { username } = await params;

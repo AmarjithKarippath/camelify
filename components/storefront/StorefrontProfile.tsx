@@ -1,5 +1,6 @@
 import { clickUrl, type PublicProfile } from "@/lib/api";
 import { SocialBadge } from "@/components/storefront/SocialBadge";
+import { StorefrontAvatar } from "@/components/storefront/StorefrontAvatar";
 import { StorefrontLinkRow } from "@/components/storefront/StorefrontLinkRow";
 
 const STAGGER_MS = 55;
@@ -19,7 +20,7 @@ export function StorefrontProfile({ profile, initials }: Props) {
       <div className="mx-auto w-full max-w-md motion-reduce:animate-none">
         <article className="overflow-hidden rounded-[28px] bg-surface shadow-[0_30px_80px_-30px_rgba(14,27,44,0.18)] ring-1 ring-black/5 motion-safe:animate-storefront-rise">
           {/* Banner */}
-          <div className="relative h-28 overflow-hidden sm:h-32" aria-hidden="true">
+          <div className="relative h-32 overflow-hidden sm:h-36" aria-hidden="true">
             <div
               className={`absolute inset-0 motion-safe:animate-storefront-banner-drift ${
                 profile.banner_url ? "bg-cover bg-center" : ""
@@ -33,34 +34,13 @@ export function StorefrontProfile({ profile, initials }: Props) {
             <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-surface/80" />
           </div>
 
-          <div className="-mt-12 flex flex-col items-center px-5 pb-7 sm:px-7">
-            {/* Avatar */}
-            <div
-              className="relative motion-safe:animate-storefront-scale-in"
-              style={{ animationDelay: "120ms" }}
-            >
-              {profile.avatar_url ? (
-                // Plain <img> — avoids Next image optimization doing a server-side
-                // fetch that fails on localhost inside the docker network.
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  src={profile.avatar_url}
-                  alt={`Profile photo of ${profile.display_name ?? profile.username}`}
-                  width={96}
-                  height={96}
-                  loading="eager"
-                  decoding="async"
-                  className="h-24 w-24 rounded-full object-cover shadow-md ring-4 ring-surface transition-transform duration-500 ease-out-expo hover:scale-[1.03]"
-                />
-              ) : (
-                <div
-                  aria-hidden="true"
-                  className="grid h-24 w-24 place-items-center rounded-full bg-gradient-to-br from-primary to-info text-2xl font-extrabold text-white shadow-md ring-4 ring-surface transition-transform duration-500 ease-out-expo hover:scale-[1.03]"
-                >
-                  {initials || "U"}
-                </div>
-              )}
-            </div>
+          <div className="flex flex-col items-center px-5 pb-7 sm:px-7">
+            <StorefrontAvatar
+              avatarUrl={profile.avatar_url}
+              displayName={profile.display_name ?? profile.username}
+              username={profile.username}
+              initials={initials}
+            />
 
             {/* Name */}
             <h1

@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 /** Default (resting) size after scroll — matches the original h-24. */
 const AVATAR_MIN = 96;
 /** Hero size at the top of the page. */
-const AVATAR_MAX = 120;
+const AVATAR_MAX = 130;
 /** How far the user scrolls before the avatar reaches resting size. */
 const SCROLL_RANGE = 110;
 

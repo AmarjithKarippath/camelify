@@ -2,9 +2,7 @@ import { CATEGORIES } from "@/lib/categories";
 import { StepShell } from "./StepShell";
 
 type Props = {
-  dob: string;
   category: string;
-  onChangeDob: (next: string) => void;
   onChangeCategory: (next: string) => void;
   onBack: () => void;
   onSkip: () => void;
@@ -14,9 +12,7 @@ type Props = {
 };
 
 export function StepInfo({
-  dob,
   category,
-  onChangeDob,
   onChangeCategory,
   onBack,
   onSkip,
@@ -24,39 +20,22 @@ export function StepInfo({
   step,
   total,
 }: Props) {
-  const today = new Date().toISOString().slice(0, 10);
-
   return (
     <StepShell
       step={step}
       total={total}
-      title="Tell us about you"
+      title="Pick your category"
       subtitle="Helps us recommend partners and templates. Optional."
       onBack={onBack}
       onSkip={onSkip}
       onNext={onNext}
     >
       <div>
-        <label htmlFor="dob" className="text-sm font-semibold text-ink-heading">
-          Date of birth
-        </label>
-        <input
-          id="dob"
-          type="date"
-          value={dob}
-          max={today}
-          onChange={(e) => onChangeDob(e.target.value)}
-          className="mt-1.5 h-12 w-full rounded-input border border-black/15 bg-surface px-3 text-base text-ink-heading focus:border-primary focus:outline-none focus:ring-4 focus:ring-primary-soft/40"
-        />
-        <p className="mt-1.5 text-xs text-ink-muted">Never shown publicly.</p>
-      </div>
-
-      <div className="mt-6">
         <p className="text-sm font-semibold text-ink-heading">
-          Pick your main category
+          What best describes you?
         </p>
         <p className="mt-1 text-xs text-ink-muted">
-          Choose the one that fits best — you can always change it.
+          Choose the one that fits best — you can always change it in Profile.
         </p>
 
         <div

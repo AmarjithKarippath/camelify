@@ -19,7 +19,6 @@ export function Onboarding({ user }: { user: Me }) {
   const [username, setUsername] = useState("");
   const [displayName, setDisplayName] = useState(user.name ?? "");
   const [avatarUrl, setAvatarUrl] = useState<string | null>(user.image ?? null);
-  const [dob, setDob] = useState("");
   const [category, setCategory] = useState("");
   const [bio, setBio] = useState("");
   const [links, setLinks] = useState<DraftLink[]>([]);
@@ -40,7 +39,6 @@ export function Onboarding({ user }: { user: Me }) {
         display_name: displayName.trim() || null,
         avatar_url: avatarUrl,
         bio: bio.trim() || null,
-        dob: dob || null,
         category: category || null,
       });
 
@@ -99,9 +97,7 @@ export function Onboarding({ user }: { user: Me }) {
         <StepInfo
           step={3}
           total={TOTAL_STEPS}
-          dob={dob}
           category={category}
-          onChangeDob={setDob}
           onChangeCategory={setCategory}
           onBack={back}
           onSkip={next}

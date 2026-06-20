@@ -214,7 +214,7 @@ export function Profile() {
       </Section>
 
       {/* DOB */}
-      <Section title="Date of birth" subtitle="Never shown publicly.">
+      <Section title="Date of birth" subtitle="Optional. Never shown publicly.">
         <Field label="Date of birth">
           <Input
             type="date"

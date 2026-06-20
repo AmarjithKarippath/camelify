@@ -14,6 +14,7 @@ from app.routers import (
     auth,
     feedback,
     health,
+    imports,
     links,
     profile,
     public,
@@ -40,22 +41,21 @@ def create_app() -> FastAPI:
         lifespan=lifespan,
     )
 
-    app.add_middleware(
-        CORSMiddleware,
-        allow_origins=settings.cors_origins,
-        allow_credentials=True,
-        allow_methods=["*"],
-        allow_headers=["*"],
-    )
-
-    # Outermost middleware — must run first so Authlib can read/write the OAuth
-    # state cookie on /auth/google/login and /auth/google/callback.
+    # Outermost middleware — CORS must run first so OPTIONS preflight succeeds.
     app.add_middleware(
         SessionMiddleware,
         secret_key=settings.secret_key,
         same_site="lax",
         https_only=settings.session_cookie_secure,
         max_age=60 * 10,
+    )
+
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=settings.cors_origins,
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
     )
 
     # Serve user-uploaded files at /media/*
@@ -67,6 +67,7 @@ def create_app() -> FastAPI:
 
     v1 = settings.api_v1_prefix
     app.include_router(auth.router, prefix=v1)
+    app.include_router(imports.router, prefix=v1)
     app.include_router(users.router, prefix=v1)
     app.include_router(profile.router, prefix=v1)
     app.include_router(links.router, prefix=v1)

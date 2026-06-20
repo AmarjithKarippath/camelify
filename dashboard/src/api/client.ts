@@ -165,6 +165,43 @@ export async function createLink(payload: LinkCreate): Promise<Link> {
   return res.json();
 }
 
+export async function createLinksBulk(payload: LinkCreate[]): Promise<Link[]> {
+  const res = await request("/v1/links/bulk", {
+    method: "POST",
+    body: JSON.stringify({ items: payload }),
+  });
+  if (!res.ok) {
+    const data = await res.json().catch(() => ({}));
+    throw new Error(extractError(data) ?? "Could not save links.");
+  }
+  return res.json();
+}
+
+// ----- Import -----
+
+export type LinktreeImportResult = {
+  username: string;
+  display_name: string | null;
+  bio: string | null;
+  avatar_url: string | null;
+  links: Array<{ title: string; url: string }>;
+  socials: Array<{ title: string; url: string }>;
+  skipped_groups: number;
+  total_imported: number;
+};
+
+export async function importFromLinktree(url: string): Promise<LinktreeImportResult> {
+  const res = await request("/v1/import/linktree", {
+    method: "POST",
+    body: JSON.stringify({ url }),
+  });
+  if (!res.ok) {
+    const data = await res.json().catch(() => ({}));
+    throw new Error(extractError(data) ?? "Could not import from Linktree.");
+  }
+  return res.json();
+}
+
 // ----- Feedback -----
 
 export type FeedbackKind = "bug" | "feature" | "other";

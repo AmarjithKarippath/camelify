@@ -5,7 +5,7 @@ from typing import List
 
 import logging
 
-from pydantic import Field, model_validator
+from pydantic import Field, field_validator, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 logger = logging.getLogger(__name__)
@@ -28,6 +28,7 @@ class Settings(BaseSettings):
             "http://localhost:3000",
             "http://localhost:5173",
             "https://camelify.com",
+            "https://www.camelify.com",
             "https://app.camelify.com",
         ]
     )
@@ -71,6 +72,27 @@ class Settings(BaseSettings):
     # Caps for the avatar upload endpoint.
     avatar_max_bytes: int = Field(default=5 * 1024 * 1024)  # 5 MB
 
+    @field_validator("cors_origins", mode="before")
+    @classmethod
+    def parse_cors_origins(cls, value: object) -> List[str]:
+        if isinstance(value, str):
+            import json
+
+            return json.loads(value)
+        return value  # type: ignore[return-value]
+
+    @model_validator(mode="after")
+    def expand_cors_www_pairs(self) -> "Settings":
+        # Signup/login on the marketing site may be served from www while CORS
+        # only lists the apex domain — auto-include both variants.
+        expanded = list(self.cors_origins)
+        for origin in self.cors_origins:
+            paired = _www_origin_pair(origin)
+            if paired and paired not in expanded:
+                expanded.append(paired)
+        self.cors_origins = expanded
+        return self
+
     @model_validator(mode="after")
     def disable_secure_cookies_for_http_oauth(self) -> "Settings":
         # OAuth state lives in the session cookie between /login and /callback.
@@ -82,6 +104,17 @@ class Settings(BaseSettings):
             )
             self.session_cookie_secure = False
         return self
+
+
+def _www_origin_pair(origin: str) -> str | None:
+    """Return apex ↔ www counterpart for a bare marketing-site origin."""
+    if origin == "https://camelify.com":
+        return "https://www.camelify.com"
+    if origin == "https://www.camelify.com":
+        return "https://camelify.com"
+    if origin == "http://localhost:3000":
+        return None
+    return None
 
 
 @lru_cache

@@ -37,6 +37,38 @@ async def _next_position(db: AsyncSession, user_id: str, kind: str) -> int:
     return int(current) + 1
 
 
+async def create_bulk(db: AsyncSession, user_id: str, payloads: List[dict]) -> List[Link]:
+    """Insert many links in one transaction — used after Linktree import."""
+    if not payloads:
+        return []
+
+    has_featured = any(item.get("kind") == "featured" for item in payloads)
+    if has_featured:
+        existing_stmt = select(Link).where(
+            Link.user_id == user_id, Link.kind == "featured"
+        )
+        for old in (await db.execute(existing_stmt)).scalars():
+            old.kind = "link"
+            old.position = await _next_position(db, user_id, "link")
+
+    counters: dict[str, int] = {"featured": 0, "link": 0, "social": 0}
+    created: List[Link] = []
+
+    for payload in payloads:
+        data = dict(payload)
+        kind = data.get("kind", "link")
+        data["position"] = counters[kind]
+        counters[kind] += 1
+        link = Link(user_id=user_id, **data)
+        db.add(link)
+        created.append(link)
+
+    await db.commit()
+    for link in created:
+        await db.refresh(link)
+    return created
+
+
 async def create(db: AsyncSession, user_id: str, payload: dict) -> Link:
     # If creating a featured link, demote any existing featured to a regular link.
     if payload.get("kind") == "featured":

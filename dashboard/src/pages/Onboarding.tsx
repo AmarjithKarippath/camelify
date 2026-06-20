@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { createLink, upsertProfile, type Me } from "@/api/client";
-import { isSocialPlatform } from "@/lib/platform";
+import { createLinksBulk, upsertProfile, type Me } from "@/api/client";
+import { assignLinkKinds } from "@/lib/linkKinds";
 import { StepUsername } from "@/components/onboarding/StepUsername";
 import { StepPhoto } from "@/components/onboarding/StepPhoto";
 import { StepInfo } from "@/components/onboarding/StepInfo";
@@ -42,21 +42,15 @@ export function Onboarding({ user }: { user: Me }) {
         category: category || null,
       });
 
-      // Save links in chosen order. First link becomes the featured link.
-      for (let i = 0; i < links.length; i++) {
-        const link = links[i];
-        const kind = i === 0 && !isSocialPlatform(link.platform)
-          ? "featured"
-          : isSocialPlatform(link.platform)
-            ? "social"
-            : "link";
-        await createLink({
+      if (links.length > 0) {
+        const items = assignLinkKinds(links).map((link) => ({
           title: link.title,
           url: link.url,
-          kind,
+          kind: link.kind,
           platform: link.platform,
           emoji: link.emoji ?? null,
-        });
+        }));
+        await createLinksBulk(items);
       }
 
       navigate("/", { replace: true });
@@ -64,6 +58,18 @@ export function Onboarding({ user }: { user: Me }) {
       setSubmitError(err instanceof Error ? err.message : "Something went wrong.");
     } finally {
       setSubmitting(false);
+    }
+  }
+
+  function applyLinktreeProfile(patch: {
+    bio?: string | null;
+    avatar_url?: string | null;
+    display_name?: string | null;
+  }) {
+    if (patch.bio && !bio.trim()) setBio(patch.bio);
+    if (patch.avatar_url && !avatarUrl) setAvatarUrl(patch.avatar_url);
+    if (patch.display_name && !displayName.trim()) {
+      setDisplayName(patch.display_name);
     }
   }
 
@@ -124,6 +130,7 @@ export function Onboarding({ user }: { user: Me }) {
           total={TOTAL_STEPS}
           links={links}
           onChange={setLinks}
+          onImportProfile={applyLinktreeProfile}
           onBack={back}
           onSkip={finish}
           onFinish={finish}

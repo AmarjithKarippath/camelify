@@ -29,6 +29,19 @@ class LinkCreate(BaseModel):
     is_visible: bool = True
 
 
+class LinkBulkCreateItem(BaseModel):
+    title: str = Field(..., min_length=1, max_length=120)
+    url: HttpUrl
+    kind: LinkKind = "link"
+    platform: str = Field(default="custom", max_length=32)
+    emoji: Optional[str] = Field(default=None, max_length=8)
+    is_visible: bool = True
+
+
+class LinkBulkCreateRequest(BaseModel):
+    items: List[LinkBulkCreateItem] = Field(..., min_length=1, max_length=500)
+
+
 class LinkUpdate(BaseModel):
     title: Optional[str] = Field(default=None, min_length=1, max_length=120)
     url: Optional[HttpUrl] = None

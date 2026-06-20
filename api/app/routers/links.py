@@ -10,6 +10,7 @@ from app.db import get_db
 from app.deps import get_current_user
 from app.models.user import User
 from app.schemas.link import (
+    LinkBulkCreateRequest,
     LinkCreate,
     LinkRead,
     LinkReorderRequest,
@@ -25,6 +26,20 @@ async def list_links(
     db: AsyncSession = Depends(get_db),
 ):
     return await link_crud.list_for_user(db, user.id)
+
+
+@router.post("/bulk", response_model=List[LinkRead], status_code=status.HTTP_201_CREATED)
+async def create_links_bulk(
+    payload: LinkBulkCreateRequest,
+    user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
+):
+    rows = []
+    for item in payload.items:
+        data = item.model_dump()
+        data["url"] = str(data["url"])
+        rows.append(data)
+    return await link_crud.create_bulk(db, user.id, rows)
 
 
 @router.post("", response_model=LinkRead, status_code=status.HTTP_201_CREATED)

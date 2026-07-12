@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Manrope } from "next/font/google";
+import { GoogleAnalytics } from "@/components/GoogleAnalytics";
 import "./globals.css";
 
 const manrope = Manrope({
@@ -96,6 +97,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={manrope.variable}>
       <body className="font-sans bg-page text-ink-body bg-watermark">
+        <GoogleAnalytics />
         {children}
       </body>
     </html>

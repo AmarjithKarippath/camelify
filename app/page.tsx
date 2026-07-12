@@ -16,7 +16,7 @@ const organizationLd = {
   "@type": "Organization",
   name: "Camelify",
   url: siteUrl,
-  logo: `${siteUrl}/logo.png`,
+  logo: `${siteUrl}/logo.svg`,
   sameAs: ["https://twitter.com/camelify", "https://www.instagram.com/camelify"],
 };
 

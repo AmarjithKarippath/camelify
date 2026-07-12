@@ -21,6 +21,7 @@ export function Footer() {
             <li><a href="#features" className="text-ink-body hover:text-primary">Features</a></li>
             <li><a href="#promise" className="text-ink-body hover:text-primary">Our promise</a></li>
             <li><a href="#faq" className="text-ink-body hover:text-primary">FAQ</a></li>
+            <li><a href="/blogs" className="text-ink-body hover:text-primary">Blog</a></li>
           </ul>
         </nav>
       </div>

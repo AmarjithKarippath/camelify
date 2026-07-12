@@ -63,13 +63,6 @@ export default function HomePage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqStructuredData) }}
       />
 
-      <a
-        href="#main"
-        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-input focus:bg-primary focus:px-4 focus:py-2 focus:font-semibold focus:text-white"
-      >
-        Skip to content
-      </a>
-
       <Header />
       <main id="main">
         <Hero />

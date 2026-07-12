@@ -7,7 +7,7 @@ from pydantic import BaseModel, ConfigDict, Field, field_validator
 USERNAME_PATTERN = re.compile(r"^[a-z0-9][a-z0-9_-]{2,39}$")
 
 RESERVED_USERNAMES: set[str] = {
-    "about", "admin", "api", "app", "auth", "billing", "camelify", "blog",
+    "about", "admin", "api", "app", "auth", "billing", "blog", "blogs", "camelify",
     "contact", "dashboard", "faq", "features", "help", "home", "login",
     "logout", "onboarding", "pricing", "privacy", "settings", "signup",
     "support", "terms", "u", "user", "users", "www",

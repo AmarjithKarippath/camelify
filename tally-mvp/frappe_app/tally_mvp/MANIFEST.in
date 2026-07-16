@@ -1,2 +1,0 @@
-include MANIFEST.in
-recursive-include tally_mvp *.json *.md *.html *.css *.js *.py

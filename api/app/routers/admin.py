@@ -12,6 +12,7 @@ from app.db import get_db
 from app.deps import require_admin
 from app.models.feedback import Feedback
 from app.models.user import User
+from app.models.waitlist import WaitlistEntry
 from app.schemas.feedback import (
     AdminFeedbackItem,
     FeedbackStatus,
@@ -198,3 +199,36 @@ async def update_feedback_status(
         user_email=author.email if author else "",
         user_name=author.name if author else None,
     )
+
+
+# ---------- Waitlist ----------
+
+
+class AdminWaitlistItem(BaseModel):
+    id: str
+    name: str
+    email: str
+    phone: str
+    source: str
+    created_at: datetime
+
+
+@router.get("/waitlist", response_model=List[AdminWaitlistItem])
+async def list_waitlist(
+    limit: int = Query(default=100, ge=1, le=500),
+    _admin: User = Depends(require_admin),
+    db: AsyncSession = Depends(get_db),
+):
+    stmt = select(WaitlistEntry).order_by(WaitlistEntry.created_at.desc()).limit(limit)
+    entries = (await db.execute(stmt)).scalars().all()
+    return [
+        AdminWaitlistItem(
+            id=e.id,
+            name=e.name,
+            email=e.email,
+            phone=e.phone,
+            source=e.source,
+            created_at=e.created_at,
+        )
+        for e in entries
+    ]

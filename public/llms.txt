@@ -1,0 +1,60 @@
+# Camelify
+
+> Camelify is a creator-first link-in-bio platform. One page for all your links — YouTube, Instagram, TikTok, your shop, booking page, and more. Custom domain on every plan, free analytics, no surprise suspensions, and fair pricing. Free to start.
+
+Camelify gives creators and businesses a single bio link page at camelify.com/yourname (or your own custom domain). Unlike many competitors, Camelify includes custom domains, analytics, and data export on the free plan. Public pages are server-rendered for fast load times and rich social previews.
+
+**Website:** https://www.camelify.com  
+**Creator dashboard:** https://app.camelify.com  
+**Contact:** hello@camelify.com  
+**Twitter:** https://twitter.com/camelify  
+**Instagram:** https://www.instagram.com/camelify
+
+## Product
+
+- [Home](https://www.camelify.com/): Landing page — features, pricing promise, FAQ, and how it works
+- [Sign up](https://www.camelify.com/signup): Create a free Camelify account
+- [Log in](https://www.camelify.com/login): Sign in to manage your bio page
+- [Creator dashboard](https://app.camelify.com): Manage links, profile, analytics, and settings
+
+## Key features
+
+- Custom domain on every plan, including Free
+- Unlimited links on the free plan
+- Free analytics: clicks, views, devices, top referrers
+- One-click data export (links, analytics, email captures)
+- 30+ platform integrations at launch (Instagram, YouTube, TikTok, X, Spotify, WhatsApp, Calendly, Shopify, Mailchimp, and more)
+- Server-rendered public pages with sub-500ms first-paint target
+- Human-reviewed account flags with 24-hour response window
+- 60-day advance notice on any pricing changes
+
+## FAQ
+
+- **What is Camelify?** A link-in-bio tool — one page (camelify.com/yourname) for all your important links.
+- **Is it free?** Yes. Free plan includes unlimited links, basic analytics, email capture, and all launch integrations.
+- **Custom domain?** Yes, on every plan including Free.
+- **Data export?** Always available on every plan, even during account review.
+- **Supported platforms?** Instagram, YouTube, TikTok, X, Facebook, LinkedIn, Spotify, Apple Music, WhatsApp, Calendly, Shopify, Stripe, Mailchimp, Klaviyo, Substack, Twitch, Pinterest, and more.
+
+## Blog
+
+- [Blog index](https://www.camelify.com/blogs): Guides on link-in-bio tools and digital business cards
+- [Ultimate Guide to Link in Bio Tools in 2026](https://www.camelify.com/blogs/ultimate-guide-link-in-bio-tools-2026): Top link-in-bio tools and Linktree alternatives
+- [Best Linktree Alternatives for Instagram in 2026](https://www.camelify.com/blogs/best-linktree-alternatives-instagram-2026): Instagram bio link alternatives
+- [Digital Business Cards: The Future of Networking in 2026](https://www.camelify.com/blogs/digital-business-cards-future-networking-2026): NFC and QR digital business cards
+- [NFC Business Cards vs QR Codes: Which Wins in 2026?](https://www.camelify.com/blogs/nfc-business-cards-vs-qr-codes-2026): Comparison of contactless card technologies
+- [Link in Bio and Digital Business Card Combo](https://www.camelify.com/blogs/link-in-bio-and-digital-business-card-combo): Integrating bio links with digital cards
+
+## Public profiles
+
+Creator bio pages are public at `https://www.camelify.com/{username}`. Example format: `https://www.camelify.com/yourname`
+
+## Legal
+
+- [Privacy policy](https://www.camelify.com/privacy)
+- [Terms of service](https://www.camelify.com/terms)
+
+## Optional
+
+- [Sitemap](https://www.camelify.com/sitemap.xml): Full list of indexable pages
+- [Robots](https://www.camelify.com/robots.txt): Crawler rules

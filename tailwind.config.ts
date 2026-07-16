@@ -5,19 +5,27 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        page: "#F1F5EE",
-        card: "#DDEBD8",
+        page: "#F7F4F8",
+        card: "#EDE8EF",
         surface: "#FFFFFF",
+        talley: {
+          purple: "#714B67",
+          "purple-dark": "#5C3D55",
+          teal: "#00A09D",
+          "teal-dark": "#008580",
+          yellow: "#F0C040",
+          blue: "#2D9CDB",
+        },
         primary: {
           DEFAULT: "#3FBF6F",
           hover: "#34A85F",
           soft: "#A8E0BC",
         },
         ink: {
-          heading: "#0E1B2C",
-          body: "#1F2A37",
-          muted: "#6B7280",
-          label: "#1B3A5B",
+          heading: "#1A1A1A",
+          body: "#4A4A4A",
+          muted: "#888888",
+          label: "#714B67",
         },
         danger: "#E53935",
         warn: "#F0B429",
@@ -25,6 +33,7 @@ const config: Config = {
       },
       fontFamily: {
         sans: ["var(--font-manrope)", "system-ui", "sans-serif"],
+        display: ["var(--font-caveat)", "cursive"],
       },
       borderRadius: {
         card: "16px",

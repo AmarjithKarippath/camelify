@@ -20,6 +20,7 @@ from app.routers import (
     public,
     uploads,
     users,
+    waitlist,
 )
 
 settings = get_settings()
@@ -73,6 +74,7 @@ def create_app() -> FastAPI:
     app.include_router(links.router, prefix=v1)
     app.include_router(uploads.router, prefix=v1)
     app.include_router(feedback.router, prefix=v1)
+    app.include_router(waitlist.router, prefix=v1)
     app.include_router(admin.router, prefix=v1)
     app.include_router(public.router, prefix=v1)
 

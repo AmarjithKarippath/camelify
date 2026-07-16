@@ -1,7 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Manrope } from "next/font/google";
 import { GoogleAnalytics } from "@/components/GoogleAnalytics";
-import { caveat } from "@/lib/fonts";
 import "./globals.css";
 
 const manrope = Manrope({
@@ -16,48 +15,50 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.camelify.com";
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "Talley — All your business on one platform",
-    template: "%s · Talley",
+    default: "Camelify — The Creator-First Link-in-Bio",
+    template: "%s · Camelify",
   },
   description:
-    "Simple, efficient business management for Indian SMBs. Accounting, inventory, GST, invoicing, and more in one affordable platform.",
-  applicationName: "Talley",
+    "Camelify is the link-in-bio that puts creators first. Custom domain on every plan, free analytics, no surprise suspensions, and fair pricing. Free to start.",
+  applicationName: "Camelify",
   keywords: [
-    "business management software",
-    "accounting software India",
-    "GST software",
-    "inventory management",
-    "Tally alternative",
-    "ERP for SMB",
-    "Talley",
+    "link in bio",
+    "linktree alternative",
+    "bio link tool",
+    "creator tools",
+    "Instagram link in bio",
+    "YouTube link in bio",
+    "creator economy",
+    "custom domain bio link",
+    "Camelify",
   ],
-  authors: [{ name: "Talley" }],
-  creator: "Talley",
-  publisher: "Talley",
+  authors: [{ name: "Camelify" }],
+  creator: "Camelify",
+  publisher: "Camelify",
   category: "technology",
   alternates: { canonical: "/" },
   openGraph: {
     type: "website",
     url: siteUrl,
-    siteName: "Talley",
-    title: "Talley — All your business on one platform",
+    siteName: "Camelify",
+    title: "Camelify — The Creator-First Link-in-Bio",
     description:
-      "Accounting, inventory, GST, and invoicing in one platform. Built for Indian small businesses.",
+      "Custom domain on every plan. Free analytics. No surprise suspensions. The link-in-bio creators actually deserve.",
     locale: "en_US",
     images: [
       {
         url: "/og-image.png",
         width: 1024,
         height: 540,
-        alt: "Talley — Business management platform",
+        alt: "Camelify — The Creator-First Link-in-Bio",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Talley — All your business on one platform",
+    title: "Camelify — The Creator-First Link-in-Bio",
     description:
-      "Accounting, inventory, GST, and invoicing in one platform for Indian SMBs.",
+      "Custom domain on every plan. Free analytics. No surprise suspensions. The link-in-bio creators actually deserve.",
     images: ["/og-image.png"],
     creator: "@camelify",
   },
@@ -83,7 +84,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#714B67",
+  themeColor: "#3FBF6F",
   width: "device-width",
   initialScale: 1,
 };
@@ -94,8 +95,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${manrope.variable} ${caveat.variable}`}>
-      <body className="font-sans bg-surface text-ink-body">
+    <html lang="en" className={manrope.variable}>
+      <body className="font-sans bg-page text-ink-body bg-watermark">
         <GoogleAnalytics />
         {children}
       </body>
